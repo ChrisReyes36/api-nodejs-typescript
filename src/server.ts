@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 import { UserRouter } from "./router/user.router";
 import { ConfigServer } from "./config/config";
+import { DataSource } from "typeorm";
 
 class ServerBootstrap extends ConfigServer {
   private app: Application = express();
@@ -17,11 +18,23 @@ class ServerBootstrap extends ConfigServer {
 
     this.app.use("/api", this.routers());
 
+    this.dbConnect()
+      .then((dataSource: DataSource) => {
+        console.log("Database connected successfully");
+      })
+      .catch((error: Error) => {
+        console.error("Database connection failed:", error);
+      });
+
     this.listen();
   }
 
   routers(): Array<Router> {
     return [new UserRouter().router];
+  }
+
+  async dbConnect(): Promise<DataSource> {
+    return await this.typeORMConfig.initialize();
   }
 
   private listen(): void {

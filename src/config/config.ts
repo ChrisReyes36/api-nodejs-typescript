@@ -1,4 +1,7 @@
 import * as dotenv from "dotenv";
+import mysql2 from "mysql2";
+import { DataSource } from "typeorm";
+import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 
 export abstract class ConfigServer {
   constructor() {
@@ -26,8 +29,23 @@ export abstract class ConfigServer {
       arrEnv.unshift(...stringToArray);
     }
 
-    console.log('arrEnv', arrEnv);
-
     return "." + arrEnv.join(".");
+  }
+
+  public get typeORMConfig(): DataSource {
+    return new DataSource({
+      type: "mysql",
+      driver: mysql2,
+      host: this.getEnvironment("DB_HOST"),
+      port: this.getNumberEnv("DB_PORT"),
+      username: this.getEnvironment("DB_USER"),
+      password: this.getEnvironment("DB_PASSWORD"),
+      database: this.getEnvironment("DB_DATABASE"),
+      entities: [__dirname + "/../**/*.entity{.ts,.js}"],
+      migrations: [__dirname + "/../../migrations/*{.ts,.js}"],
+      synchronize: true,
+      logging: false,
+      namingStrategy: new SnakeNamingStrategy(),
+    });
   }
 }
