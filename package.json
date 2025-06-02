@@ -1,0 +1,40 @@
+{
+  "name": "api-ts",
+  "version": "1.0.0",
+  "description": "Curso Nodejs con TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node dist/server.js",
+    "start:dev": "tsc && concurrently \"tsc -w\" \"nodemon dist/server.js\" "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChrisReyes36/api-nodejs-typescript.git"
+  },
+  "author": "Christopher Reyes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChrisReyes36/api-nodejs-typescript/issues"
+  },
+  "homepage": "https://github.com/ChrisReyes36/api-nodejs-typescript#readme",
+  "dependencies": {
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "typeorm": "^0.3.24",
+    "typeorm-naming-strategies": "^4.1.0",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
+    "@types/morgan": "^1.9.9",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.10"
+  }
+}
