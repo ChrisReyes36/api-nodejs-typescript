@@ -1,9 +1,9 @@
 import express, { Application, json, urlencoded, Router } from "express";
 import morgan from "morgan";
 import cors from "cors";
-import { UserRouter } from "./router/user.router";
-import { ConfigServer } from "./config/config";
 import { DataSource } from "typeorm";
+import { UserRouter } from "./user/user.router";
+import { ConfigServer } from "./config/config";
 
 class ServerBootstrap extends ConfigServer {
   private app: Application = express();
