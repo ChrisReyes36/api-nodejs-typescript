@@ -2,12 +2,15 @@ import express, { Application, json, urlencoded, Router } from "express";
 import morgan from "morgan";
 import cors from "cors";
 import { UserRouter } from "./router/user.router";
+import { ConfigServer } from "./config/config";
+import { DataSource } from "typeorm";
 
-class ServerBootstrap {
+class ServerBootstrap extends ConfigServer {
   private app: Application = express();
-  private port: number = 9001;
+  private port: number = this.getNumberEnv("PORT");
 
   constructor() {
+    super();
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
     this.app.use(morgan("dev"));
@@ -15,11 +18,23 @@ class ServerBootstrap {
 
     this.app.use("/api", this.routers());
 
+    this.dbConnect()
+      .then((dataSource: DataSource) => {
+        console.log("Database connected successfully");
+      })
+      .catch((error: Error) => {
+        console.error("Database connection failed:", error);
+      });
+
     this.listen();
   }
 
   routers(): Array<Router> {
     return [new UserRouter().router];
+  }
+
+  async dbConnect(): Promise<DataSource> {
+    return await this.typeORMConfig.initialize();
   }
 
   private listen(): void {
