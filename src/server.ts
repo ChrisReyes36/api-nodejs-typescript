@@ -1,9 +1,13 @@
 import express, { Application, json, urlencoded, Router } from "express";
 import morgan from "morgan";
 import cors from "cors";
-import { DataSource } from "typeorm";
 import { UserRouter } from "./user/user.router";
 import { ConfigServer } from "./config/config";
+import { PurchaseRouter } from "./purchase/purchase.router";
+import { ProductRouter } from "./product/product.router";
+import { CustomerRouter } from "./customer/customer.router";
+import { CategoryRouter } from "./category/category.router";
+import { PurchaseProductRouter } from "./purchase/purchase-product.router";
 
 class ServerBootstrap extends ConfigServer {
   private app: Application = express();
@@ -16,25 +20,28 @@ class ServerBootstrap extends ConfigServer {
     this.app.use(morgan("dev"));
     this.app.use(cors());
 
-    this.app.use("/api", this.routers());
-
     this.dbConnect()
-      .then((dataSource: DataSource) => {
+      .then(() => {
         console.log("Database connected successfully");
       })
       .catch((error: Error) => {
         console.error("Database connection failed:", error);
       });
 
+    this.app.use("/api", this.routers());
+
     this.listen();
   }
 
   routers(): Array<Router> {
-    return [new UserRouter().router];
-  }
-
-  async dbConnect(): Promise<DataSource> {
-    return await this.typeORMConfig.initialize();
+    return [
+      new UserRouter().router,
+      new PurchaseRouter().router,
+      new ProductRouter().router,
+      new CustomerRouter().router,
+      new CategoryRouter().router,
+      new PurchaseProductRouter().router,
+    ];
   }
 
   private listen(): void {

@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && node dist/server.js",
-    "start:dev": "tsc && concurrently \"tsc -w\" \"nodemon dist/server.js\"",
+    "clean": "npx rimraf dist",
+    "start": "npm run clean && tsc && node dist/server.js",
+    "start:dev": "npm run clean && tsc && concurrently \"tsc -w\" \"nodemon dist/server.js\"",
     "start:prod": "SET NODE_ENV=production && npm start"
   },
   "repository": {
@@ -36,6 +37,7 @@
     "@types/express": "^5.0.2",
     "@types/morgan": "^1.9.9",
     "concurrently": "^9.1.2",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "rimraf": "^5.0.10"
   }
 }

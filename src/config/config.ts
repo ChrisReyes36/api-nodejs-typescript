@@ -48,4 +48,8 @@ export abstract class ConfigServer {
       namingStrategy: new SnakeNamingStrategy(),
     });
   }
+
+  async dbConnect(): Promise<DataSource> {
+    return await this.typeORMConfig.initialize();
+  }
 }
