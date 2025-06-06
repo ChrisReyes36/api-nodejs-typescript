@@ -1,4 +1,4 @@
-import { BaseRouter } from "../shared/router";
+import { BaseRouter } from "../shared/router/router";
 import { PurchaseProductController } from "./controllers/purchase-product.controller";
 
 export class PurchaseProductRouter extends BaseRouter<PurchaseProductController> {
